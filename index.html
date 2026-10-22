@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telão Oficial - Capivara Clube</title>
+    <!-- Fonte legível e limpa de alto contraste -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #0b0e14;
+            color: #ffffff;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+            position: relative;
+        }
+
+        /* CONTAINER PRINCIPAL */
+        .container-main {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            padding: 16px;
+            overflow: hidden;
+        }
+
+        /* SESSÃO SUPERIOR: TEMPOS AO VIVO */
+        .live-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            flex: 2.2;
+        }
+
+        .live-card {
+            background: #131a27;
+            border: 2px solid #2a364f;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .live-card h2 {
+            font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+            margin-bottom: 8px;
+            color: #e2e8f0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .live-card .badge-pista {
+            background-color: #2ecc71;
+            color: #0b0e14;
+            padding: 4px 14px;
+            border-radius: 8px;
+            font-size: 0.65em;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .live-time-display { 
+            font-size: clamp(5.5rem, 11vw, 10.5rem); 
+            font-weight: 900; 
+            color: #f8fafc; 
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-top: 5px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        /* SESSÃO INFERIOR: COMPACTADA COM NOMES MAIORES */
+        .benchmarks-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        /* 1. REI DA PISTA (LARGURA TOTAL NO TOPO DA SEÇÃO INFERIOR) */
+        .king-bench {
+            background: linear-gradient(135deg, #1e261a 0%, #131a27 100%);
+            border: 2px solid #d97706;
+            border-radius: 14px;
+            padding: 8px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            flex: 1;
+        }
+
+        .king-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            overflow: hidden;
+        }
+
+        .king-bench h3 { 
+            color: #fbbf24; 
+            font-size: clamp(0.9rem, 1.4vw, 1.2rem); 
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .king-bench .piloto-bench {
+            font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+            color: #ffffff;
+            font-weight: 900;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.1;
+        }
+
+        .king-bench .cat-bench {
+            font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+            color: #fbbf24;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .king-bench .time-bench {
+            font-size: clamp(2rem, 3.5vw, 3.2rem);
+            font-weight: 900;
+            color: #ffffff;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            margin-left: 15px;
+        }
+
+        /* 2. RECORDES LADO A LADO */
+        .records-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .card-bench {
+            background-color: #131a27;
+            border: 1px solid #2a364f;
+            border-radius: 14px;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .card-bench-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .card-bench h3 {
+            font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .piloto-bench {
+            font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+            color: #ffffff;
+            font-weight: 900;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.1;
+            width: 100%;
+        }
+
+        .cat-bench {
+            font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+            color: #2ecc71;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .time-bench {
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 900;
+            color: #ffffff;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            margin-left: 10px;
+        }
+
+        /* BARRA DE RODAPÉ/STATUS */
+        .brand-footer {
+            position: absolute;
+            bottom: 6px;
+            left: 16px;
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            z-index: 100;
+        }
+
+        .brand-footer span {
+            color: #2ecc71;
+        }
+
+        .status-bar {
+            position: absolute;
+            bottom: 6px;
+            right: 16px;
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+            z-index: 100;
+        }
+    </style>
+    
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body>
+
+    <div class="container-main">
+        
+        <!-- 1. TEMPOS AO VIVO DA PISTA -->
+        <div class="live-section">
+            <div class="live-card">
+                <h2><span class="badge-pista">PISTA 1</span> EXTERNA</h2>
+                <div id="pista1-time" class="live-time-display">00.000s</div>
+            </div>
+            
+            <div class="live-card">
+                <h2><span class="badge-pista">PISTA 2</span> INTERNA</h2>
+                <div id="pista2-time" class="live-time-display">00.000s</div>
+            </div>
+        </div>
+
+        <!-- 2. RECORDESTAS E REI DA PISTA -->
+        <div class="benchmarks-section">
+            
+            <!-- REI DA PISTA -->
+            <div class="card-bench king-bench">
+                <div class="king-header">
+                    <h3>👑 REI DA PISTA</h3>
+                    <div id="king-piloto-info" class="piloto-bench">---</div>
+                    <div id="king-cat-info" class="cat-bench">CATEGORIA</div>
+                </div>
+                <div id="king-time" class="time-bench">0.000s</div>
+            </div>
+
+            <!-- RECORDES DAS PISTAS -->
+            <div class="records-row">
+                <div class="card-bench">
+                    <div class="card-bench-info">
+                        <h3>RECORD P1 (EXTERNA)</h3>
+                        <div id="record-pista1-info" class="piloto-bench">---</div>
+                        <div id="record-pista1-cat" class="cat-bench">---</div>
+                    </div>
+                    <div id="record-pista1-time" class="time-bench">0.000s</div>
+                </div>
+
+                <div class="card-bench">
+                    <div class="card-bench-info">
+                        <h3>RECORD P2 (INTERNA)</h3>
+                        <div id="record-pista2-info" class="piloto-bench">---</div>
+                        <div id="record-pista2-cat" class="cat-bench">---</div>
+                    </div>
+                    <div id="record-pista2-time" class="time-bench">0.000s</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="brand-footer">By <span>Capivara Clube</span></div>
+    <div class="status-bar">MQTT: <span id="connection-status" style="color: #ef4444;">Desconectado</span></div>
+
+    <script>
+        const googleScriptURL = "https://script.google.com/macros/s/AKfycbx6BbQbgdffb_sVon5PSu6M1EK-2_qN2aNbLbzAat_Vx8Kuvv-mVckZI9Kp7Cdd08E/exec";
+        const mqttServer = 'ws://192.168.1.178:9001'; 
+        
+        let isFetching = false;
+        const client = mqtt.connect(mqttServer, { clientId: 'public_' + Math.random().toString(16).substr(2, 5) });
+
+        const elements = {
+            connectionStatus: document.getElementById('connection-status'),
+            pista1Time: document.getElementById('pista1-time'),
+            pista2Time: document.getElementById('pista2-time'),
+            recordPista1Time: document.getElementById('record-pista1-time'),
+            recordPista2Time: document.getElementById('record-pista2-time'),
+            recordPista1Info: document.getElementById('record-pista1-info'),
+            recordPista2Info: document.getElementById('record-pista2-info'),
+            recordPista1Cat: document.getElementById('record-pista1-cat'),
+            recordPista2Cat: document.getElementById('record-pista2-cat'),
+            kingTime: document.getElementById('king-time'),
+            kingPilotoInfo: document.getElementById('king-piloto-info'),
+            kingCatInfo: document.getElementById('king-cat-info')
+        };
+
+        function formatarSaida(valor) {
+            const num = parseFloat(valor);
+            if (isNaN(num) || num === 99.999 || num >= 99.999) {
+                return "N.C";
+            }
+            return num.toFixed(3) + "s";
+        }
+
+        client.on('connect', () => {
+            elements.connectionStatus.textContent = 'Conectado';
+            elements.connectionStatus.style.color = '#2ecc71';
+            client.subscribe(["cronometro/resultado/pista1", "cronometro/resultado/pista2", "cronometro/lcd"]);
+        });
+
+        client.on('error', (err) => {
+            console.error("Erro MQTT:", err);
+            elements.connectionStatus.textContent = 'Erro';
+            elements.connectionStatus.style.color = '#ef4444';
+        });
+
+        client.on('offline', () => {
+            elements.connectionStatus.textContent = 'Offline';
+            elements.connectionStatus.style.color = '#f97316';
+        });
+
+        client.on('message', (topic, message) => {
+            const msg = message.toString();
+            if (topic.includes("pista1")) elements.pista1Time.textContent = formatarSaida(msg);
+            if (topic.includes("pista2")) elements.pista2Time.textContent = formatarSaida(msg);
+            if (topic.includes("lcd") && msg.includes("Pistas Liberadas")) {
+                elements.pista1Time.textContent = "00.000s";
+                elements.pista2Time.textContent = "00.000s";
+            }
+        });
+
+        async function updatePublicDashboard() {
+            if (isFetching) return;
+            isFetching = true;
+            
+            try {
+                const response = await fetch(googleScriptURL);
+                const data = await response.json();
+                
+                let king = { tempo: Infinity, nome: '---', cat: '---' };
+                let rP1 = { tempo: Infinity, nome: '---', cat: '---' };
+                let rP2 = { tempo: Infinity, nome: '---', cat: '---' };
+
+                const len = data.length;
+                for (let i = 0; i < len; i++) {
+                    const item = data[i];
+                    const tP1 = parseFloat(item.tempo_p1);
+                    const tP2 = parseFloat(item.tempo_p2);
+
+                    if (tP1 > 0 && tP1 < 99.999) {
+                        if (tP1 < rP1.tempo) { rP1.tempo = tP1; rP1.nome = item.nome_p1; rP1.cat = item.categoria_p1; }
+                        if (tP1 < king.tempo) { king.tempo = tP1; king.nome = item.nome_p1; king.cat = item.categoria_p1; }
+                    }
+                    if (tP2 > 0 && tP2 < 99.999) {
+                        if (tP2 < rP2.tempo) { rP2.tempo = tP2; rP2.nome = item.nome_p2; rP2.cat = item.categoria_p2; }
+                        if (tP2 < king.tempo) { king.tempo = tP2; king.nome = item.nome_p2; king.cat = item.categoria_p2; }
+                    }
+                }
+
+                elements.kingTime.textContent = king.tempo === Infinity ? "0.000s" : formatarSaida(king.tempo);
+                elements.kingPilotoInfo.textContent = king.nome;
+                elements.kingCatInfo.textContent = king.cat;
+
+                elements.recordPista1Time.textContent = rP1.tempo === Infinity ? "0.000s" : formatarSaida(rP1.tempo);
+                elements.recordPista1Info.textContent = rP1.nome;
+                elements.recordPista1Cat.textContent = rP1.cat;
+
+                elements.recordPista2Time.textContent = rP2.tempo === Infinity ? "0.000s" : formatarSaida(rP2.tempo);
+                elements.recordPista2Info.textContent = rP2.nome;
+                elements.recordPista2Cat.textContent = rP2.cat;
+
+            } catch (e) { console.error("Erro dashboard público:", e); }
+            finally { isFetching = false; }
+        }
+
+        setInterval(updatePublicDashboard, 2000);
+        window.onload = updatePublicDashboard;
+    </script>
+</body>
+</html>
